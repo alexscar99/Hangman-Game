@@ -27,58 +27,90 @@ var alphabet = [
   'z'
 ];
 
-var word = '';
-
 var wordArray = [];
 
 var blankSpacesArray = [];
 
 var createWord = prompt('Player One: Enter a word for Player Two to guess.');
-// console.log(createWord);
 
 var wordArray = createWord.split('');
-// console.log(wordArray);
 
-// console.log(wordArray.length);
-// wordArray = ["l", "a", "p", "t", "o", "p"]
 for (var i = 0; i < wordArray.length; i++) {
   blankSpacesArray.push('_');
   blankSpacesArray.push(' ');
 }
 
-var blankSpaces = blankSpacesArray.join('');
+var word = blankSpacesArray.join('');
 
 var wins = 0;
 
 var guessedLettersArray = [];
 
-var remainingGuesses = 6;
+var guessCounter = 7;
 
 document.onkeyup = function(event) {
   var userGuess = event.key;
 
+  guessedLettersArray.push(userGuess);
+
+  var guessedLettersString = guessedLettersArray.join(' ');
+
+  var correctGuess = wordArray.includes(userGuess);
+
   if (alphabet.includes(userGuess)) {
-    guessedLettersArray.push(userGuess);
+    if (correctGuess) {
+      var correctLetterIndex = wordArray.indexOf(userGuess);
 
-    var remainingGuesses = 6 - guessedLettersArray.length;
+      var wordArrayWithoutSpaces = word.split(' ');
 
-    if (remainingGuesses <= 0) {
+      wordArrayWithoutSpaces[correctLetterIndex] = userGuess;
+
+      word = wordArrayWithoutSpaces.join(' ');
+
+      guessCounter += 0;
+
+      guessedLettersString = guessedLettersString;
+    } else {
+      // FIGURE OUT HOW TO ONLY SUBTRACT FROM GUESS COUNTER IF NOT IN WORD ARRAY WITHOUT ITERATION
+      // BECAUSE IT WILL KEEP SUBTRACTING AN EXTRA TIME WHEN A NEW KEY IS HIT
+
+      guessCounter = 7 - guessedLettersArray.length;
+
+      document.querySelector('#hangman-game').innerHTML =
+        '<h1>Press a key to guess a letter!<h1>' +
+        '<br>' +
+        '<h2>Word to guess: ' +
+        word +
+        '</h2>' +
+        '<br>' +
+        '<p>Wins: ' +
+        wins +
+        '</p>' +
+        '<br>' +
+        '<p>Remaining Guesses: ' +
+        guessCounter +
+        '</p>' +
+        '<br>' +
+        '<p>Letters Guessed: ' +
+        guessedLettersString +
+        '</p>';
+    }
+
+    if (guessCounter <= 0) {
       alert('You lost the game. Refresh the page to play again!');
       return;
     }
 
-    var guessedLettersString = guessedLettersArray.join(' ');
-
-    if (wordArray.includes(userGuess)) {
-      var correctLetterIndex = wordArray.indexOf(userGuess);
-      blankSpacesArray.splice(correctLetterIndex, 1);
-      blankSpacesArray.push(userGuess);
+    if (!word.includes('_')) {
+      wins = wins + 1;
+      alert('Congratulations! You just won! Hit refresh to play again.');
     }
 
     document.querySelector('#hangman-game').innerHTML =
+      '<h1>Press a key to guess a letter!<h1>' +
       '<br>' +
       '<h2>Word to guess: ' +
-      blankSpaces +
+      word +
       '</h2>' +
       '<br>' +
       '<p>Wins: ' +
@@ -86,13 +118,13 @@ document.onkeyup = function(event) {
       '</p>' +
       '<br>' +
       '<p>Remaining Guesses: ' +
-      remainingGuesses +
+      guessCounter +
       '</p>' +
       '<br>' +
       '<p>Letters Guessed: ' +
       guessedLettersString +
       '</p>';
   } else {
-    alert('Something is broken');
+    alert("That's not a letter!");
   }
 };
