@@ -27,36 +27,44 @@ var alphabet = [
   'z'
 ];
 
-// empty array to push letters into later
+var createWord = '';
+
 var letterArray = [];
 
-// empty array to push blank spaces and underscores into later
 var blankWordArray = [];
 
-// ask user to enter word for other player to guess
-var createWord = prompt('Enter a word for the other player to guess!');
+var word = '';
 
-// split that word into an array of each letter as an item
-var letterArray = createWord.split('');
-
-// loop through the letter array and push in an underscore and a space for each letter
-for (var i = 0; i < letterArray.length; i++) {
-  blankWordArray.push('_ ');
-}
-
-// turn the array of appropriate underscores and spaces into a string
-var word = blankWordArray.join('');
-
-// set wins to 0 outside of onkeyup function
-var wins = 0;
-
-// create empty array for guessed letters
 var guessedLettersArray = [];
 
-// remaining guesses starts at 7
+var wins = 0;
+
 var guessCounter = 7;
 
-document.querySelector('#word-to-guess').innerHTML = 'Word to Guess ' + word;
+var initializeGame = function() {
+  createWord = prompt('Enter a word for the other player to guess!');
+  letterArray = createWord.split('');
+  for (var i = 0; i < letterArray.length; i++) {
+    blankWordArray.push('_ ');
+  }
+  word = blankWordArray.join('');
+  document.querySelector('#word-to-guess').innerHTML = 'Word to Guess ' + word;
+};
+
+var reset = function() {
+  createWord = '';
+  letterArray = [];
+  blankWordArray = [];
+  word = '';
+  guessedLettersArray = [];
+  guessCounter = 7;
+  guessedLettersString = '';
+  document.querySelector('#letters-guessed').innerHTML =
+    '<strong>Letters Guessed:</strong> ' + guessedLettersString;
+  initializeGame();
+};
+
+initializeGame();
 
 document.onkeyup = function(event) {
   // record the key pressed by the user
@@ -111,17 +119,22 @@ document.onkeyup = function(event) {
 
     // if the player runs out of guesses, let them know they lost
     if (guessCounter <= 0) {
-      alert("You lost the game. The word was '" + createWord + "'" + '.');
-      window.location.reload();
+      setTimeout(function() {
+        alert("You lost the game. The word was '" + createWord + "'" + '.');
+        reset();
+      }, 300);
     }
     // if the player completes the word before running out of guesses, add one to win and let them know they won
     if (!word.includes('_')) {
-      wins += 1;
-      alert('Congratulations! You just won!');
-      window.location.reload();
+      wins++;
+      document.querySelector('#wins').innerHTML =
+        '<strong>Wins:</strong> ' + wins;
+      setTimeout(function() {
+        alert('Congratulations! You just won!');
+        reset();
+      }, 300);
     }
   } else {
-    // let the user know that they hit a key that wasn't a letter
     alert("That's not a letter!");
   }
 };
