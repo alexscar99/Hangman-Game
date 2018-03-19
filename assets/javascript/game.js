@@ -34,7 +34,7 @@ var letterArray = [];
 var blankWordArray = [];
 
 // ask user to enter word for other player to guess
-var createWord = prompt('Player One: Enter a word for Player Two to guess!');
+var createWord = prompt('Enter a word for the other player to guess!');
 
 // split that word into an array of each letter as an item
 var letterArray = createWord.split('');
@@ -97,54 +97,29 @@ document.onkeyup = function(event) {
       // remove one from remaining guesses if the guess is incorrect
       guessCounter -= 1;
     }
+    document.querySelector('#word-to-guess').innerHTML =
+      'Word to Guess: ' + word;
+
+    document.querySelector('#remaining-guesses').innerHTML =
+      '<strong>Remaining Guesses:</strong> ' + guessCounter;
+
+    document.querySelector('#letters-guessed').innerHTML =
+      '<strong>Letters Guessed:</strong> ' + guessedLettersString;
+
+    document.querySelector('#wins').innerHTML =
+      '<strong>Wins:</strong> ' + wins;
+
     // if the player runs out of guesses, let them know they lost
     if (guessCounter <= 0) {
-      alert(
-        'You lost the game. The word was ' +
-          createWord +
-          '. Refresh the page to play again!'
-      );
+      alert("You lost the game. The word was '" + createWord + "'" + '.');
+      window.location.reload();
     }
     // if the player completes the word before running out of guesses, add one to win and let them know they won
     if (!word.includes('_')) {
       wins += 1;
-      alert('Congratulations! You just won! Hit refresh to play again.');
+      alert('Congratulations! You just won!');
+      window.location.reload();
     }
-    // change HTML
-    document.querySelector('#hangman-game').innerHTML =
-      '<div class="jumbotron">' +
-      '<h1>Welcome to the Hangman Game!<h1>' +
-      '<h2>Press any key to guess a letter.</h2>' +
-      '</div>' +
-      '<div id="first-br">' +
-      '<br>' +
-      '</div>' +
-      '<h2 id="word-to-guess">Word to Guess: ' +
-      word +
-      '</h2>' +
-      '<div id="main-content">' +
-      '<div class="progress">' +
-      '<br>' +
-      '</div>' +
-      '<p><strong>Remaining Guesses:</strong> ' +
-      guessCounter +
-      '</p>' +
-      '<div class="progress">' +
-      '<br>' +
-      '</div>' +
-      '<p><strong>Letters Guessed:</strong> ' +
-      guessedLettersString +
-      '</p>' +
-      '<div class="progress">' +
-      '<br>' +
-      '</div>' +
-      '<p><strong>Wins:</strong> ' +
-      wins +
-      '</p>' +
-      '<div class="progress">' +
-      '<br>' +
-      '</div>' +
-      '</div>';
   } else {
     // let the user know that they hit a key that wasn't a letter
     alert("That's not a letter!");
