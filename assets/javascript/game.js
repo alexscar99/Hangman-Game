@@ -1,4 +1,3 @@
-// create an array of all letters to check later if user input is a letter
 var alphabet = [
   'a',
   'b',
@@ -42,8 +41,7 @@ var letterArray = createWord.split('');
 
 // loop through the letter array and push in an underscore and a space for each letter
 for (var i = 0; i < letterArray.length; i++) {
-  blankWordArray.push('_');
-  blankWordArray.push(' ');
+  blankWordArray.push('_ ');
 }
 
 // turn the array of appropriate underscores and spaces into a string
@@ -58,18 +56,7 @@ var guessedLettersArray = [];
 // remaining guesses starts at 7
 var guessCounter = 7;
 
-// display the header and the blank word before any keys are hit
-document.querySelector('#hangman-game').innerHTML =
-  '<div class="jumbotron">' +
-  '<h1>Welcome to the Hangman Game!<h1>' +
-  '<h2>Press any key to guess a letter.</h2>' +
-  '</div>' +
-  '<div id="first-br">' +
-  '<br>' +
-  '</div>' +
-  '<h2 id="word-to-guess">Word to Guess: ' +
-  word +
-  '</h2>';
+document.querySelector('#word-to-guess').innerHTML = 'Word to Guess ' + word;
 
 document.onkeyup = function(event) {
   // record the key pressed by the user
@@ -108,7 +95,7 @@ document.onkeyup = function(event) {
       word = letterArrayWithoutSpaces.join(' ');
     } else {
       // remove one from remaining guesses if the guess is incorrect
-      guessCounter = guessCounter - 1;
+      guessCounter -= 1;
     }
     // if the player runs out of guesses, let them know they lost
     if (guessCounter <= 0) {
@@ -117,11 +104,10 @@ document.onkeyup = function(event) {
           createWord +
           '. Refresh the page to play again!'
       );
-      return;
     }
     // if the player completes the word before running out of guesses, add one to win and let them know they won
     if (!word.includes('_')) {
-      wins = wins + 1;
+      wins += 1;
       alert('Congratulations! You just won! Hit refresh to play again.');
     }
     // change HTML
