@@ -48,7 +48,7 @@ var playerTwoWins = 0;
 var guessCounter = 7;
 
 var initializeGame = function() {
-  createWord = prompt('Enter a word for the other player to guess!');
+  createWord = prompt('What word will stump the guessing player?');
   letterArray = createWord.split('');
   for (var i = 0; i < letterArray.length; i++) {
     blankWordArray.push('_ ');
