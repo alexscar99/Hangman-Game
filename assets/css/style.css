@@ -34,10 +34,29 @@ p {
   background: #f7f7f7;
 }
 
+.btn {
+  background: rgb(38, 97, 206);
+  color: white;
+}
+
 #word-to-guess {
   color: rgb(38, 97, 206);
   margin: 25px 80px 0 80px;
   font-size: 40px;
+}
+
+#player-select h3 {
+  color: rgb(38, 97, 206);
+  text-align: center;
+  font-size: 22px;
+}
+
+#player-select button {
+  background: rgb(38, 97, 206);
+  color: white;
+  margin: 50px -100px 25px 320px;
+  padding: 12px 24px;
+  font-size: 16px;
 }
 
 #first-br {

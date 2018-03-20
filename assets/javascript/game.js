@@ -37,7 +37,13 @@ var word = '';
 
 var guessedLettersArray = [];
 
-var wins = 0;
+var playerOne = false;
+
+var playerTwo = false;
+
+var playerOneWins = 0;
+
+var playerTwoWins = 0;
 
 var guessCounter = 7;
 
@@ -48,7 +54,8 @@ var initializeGame = function() {
     blankWordArray.push('_ ');
   }
   word = blankWordArray.join('');
-  document.querySelector('#word-to-guess').innerHTML = 'Word to Guess ' + word;
+  document.querySelector('#word-to-guess').innerHTML =
+    '<h2>Word to Guess: ' + word + '</h2>';
 };
 
 var reset = function() {
@@ -59,12 +66,23 @@ var reset = function() {
   guessedLettersArray = [];
   guessCounter = 7;
   guessedLettersString = '';
+  playerOne = false;
+  playerTwo = false;
   document.querySelector('#letters-guessed').innerHTML =
     '<strong>Letters Guessed:</strong> ' + guessedLettersString;
-  initializeGame();
 };
 
-initializeGame();
+// on click event that determines player 1 is guessing and starts the game
+document.getElementById('player-1-btn').addEventListener('click', function() {
+  playerOne = true;
+  initializeGame();
+});
+
+// on click event that determines that player 2 is playing and starts the game
+document.getElementById('player-2-btn').addEventListener('click', function() {
+  playerTwo = true;
+  initializeGame();
+});
 
 document.onkeyup = function(event) {
   // record the key pressed by the user
@@ -108,14 +126,19 @@ document.onkeyup = function(event) {
     document.querySelector('#word-to-guess').innerHTML =
       'Word to Guess: ' + word;
 
+    // document.querySelector('#player-select').innerHTML = '';
+
     document.querySelector('#remaining-guesses').innerHTML =
       '<strong>Remaining Guesses:</strong> ' + guessCounter;
 
     document.querySelector('#letters-guessed').innerHTML =
       '<strong>Letters Guessed:</strong> ' + guessedLettersString;
 
-    document.querySelector('#wins').innerHTML =
-      '<strong>Wins:</strong> ' + wins;
+    document.querySelector('#player-one-wins').innerHTML =
+      '<strong>Player 1 Wins:</strong> ' + playerOneWins;
+
+    document.querySelector('#player-two-wins').innerHTML =
+      '<strong>Player 2 Wins:</strong> ' + playerTwoWins;
 
     // if the player runs out of guesses, let them know they lost
     if (guessCounter <= 0) {
@@ -125,10 +148,18 @@ document.onkeyup = function(event) {
       }, 300);
     }
     // if the player completes the word before running out of guesses, add one to win and let them know they won
-    if (!word.includes('_')) {
-      wins++;
-      document.querySelector('#wins').innerHTML =
-        '<strong>Wins:</strong> ' + wins;
+    if (!word.includes('_') && playerOne) {
+      playerOneWins++;
+      document.querySelector('#player-one-wins').innerHTML =
+        '<strong>Player 1 Wins: </strong>' + playerOneWins;
+      setTimeout(function() {
+        alert('Congratulations! You just won!');
+        reset();
+      }, 300);
+    } else if (!word.includes('_') && playerTwo) {
+      playerTwoWins++;
+      document.querySelector('#player-two-wins').innerHTML =
+        '<strong>Player 2 Wins: </strong>' + playerTwoWins;
       setTimeout(function() {
         alert('Congratulations! You just won!');
         reset();
